@@ -2,25 +2,23 @@ CREATE DATABASE IF NOT EXISTS chat;
 
 USE chat;
 
+DROP TABLE IF EXISTS `Messages`, `Rooms`, `Users`, `Friends`;
 
 -- ---
 -- Table messages
 --
 -- ---
 
-DROP TABLE IF EXISTS `Messages`;
-
 CREATE TABLE `Messages` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `Message ID` INT NOT NULL,
-  `Room Name` MEDIUMTEXT NULL,
-  `Message Text` MEDIUMTEXT NULL,
-  `Username` MEDIUMTEXT NULL,
-  `Github Handle` VARCHAR(40) NULL,
-  `Campus` MEDIUMTEXT NULL,
+  `Message ID` INT NOT NULL AUTO_INCREMENT,
+  -- `Room Name` INTEGER NULL,
+  `Room Name` VARCHAR(20) NULL,
+  `Message Text` MEDIUMTEXT,
+  -- `Username` INTEGER NULL,
+  `Username` VARCHAR(20) NULL,
   `Created At` TIMESTAMP NULL,
   `Updated At` TIMESTAMP NULL,
-  PRIMARY KEY (`id`, `Message ID`)
+  PRIMARY KEY (`Message ID`)
 );
 
 
@@ -29,14 +27,10 @@ CREATE TABLE `Messages` (
 --
 -- ---
 
-DROP TABLE IF EXISTS `Rooms`;
-
 CREATE TABLE `Rooms` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `Room ID` INTEGER NOT NULL AUTO_INCREMENT,
   `Room Name` VARCHAR(20) NOT NULL,
-  `Messages` MEDIUMTEXT NULL,
-  `Username` MEDIUMTEXT NULL,
-  PRIMARY KEY (`id`, `Room Name`)
+  PRIMARY KEY (`Room ID`)
 );
 
 
@@ -46,21 +40,38 @@ CREATE TABLE `Rooms` (
 --
 -- ---
 
-DROP TABLE IF EXISTS `Users`;
-
 CREATE TABLE `Users` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `User ID` INTEGER NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(20) NOT NULL,
-  `Messages` MEDIUMTEXT NULL,
   `Github Handle` VARCHAR(40) NULL,
-  `Campus` MEDIUMTEXT NULL,
-  PRIMARY KEY (`id`, `Username`)
+  `Campus` VARCHAR(20) NULL,
+  `Friend` INTEGER,
+  PRIMARY KEY (`User ID`)
+);
+
+-- ---
+-- Table Friends
+--
+-- ---
+
+CREATE TABLE `Friends`(
+  `Friend ID` INTEGER NOT NULL AUTO_INCREMENT,
+  `User` INTEGER NOT NULL,
+  `Friend` INTEGER NOT NULL,
+  PRIMARY KEY (`Friend ID`)
 );
 
 
--- TODO: Add Foreign Key links
+-- ---
+-- Foreign Keys
+-- ---
 
-/*Table Properties*/
+-- ALTER TABLE `Messages` ADD FOREIGN KEY (Username) REFERENCES `Users` (`User ID`);
+-- ALTER TABLE `Messages` ADD FOREIGN KEY (`Room Name`) REFERENCES `Rooms` (`Room ID`);
+ALTER TABLE `Users` ADD FOREIGN KEY (Friend) REFERENCES `Friends` (`Friend ID`);
+ALTER TABLE `Friends` ADD FOREIGN KEY (User) REFERENCES `Users` (`User ID`);
+ALTER TABLE `Friends` ADD FOREIGN KEY (Friend) REFERENCES `Users` (`User ID`);
+
 -- ALTER TABLE `Rooms` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Messages` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
