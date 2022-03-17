@@ -57,6 +57,9 @@ CREATE TABLE `Users` (
   PRIMARY KEY (`id`, `Username`)
 );
 
+
+-- TODO: Add Foreign Key links
+
 /*Table Properties*/
 -- ALTER TABLE `Rooms` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
